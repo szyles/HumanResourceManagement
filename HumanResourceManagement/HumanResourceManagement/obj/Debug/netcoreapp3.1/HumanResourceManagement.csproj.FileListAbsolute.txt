@@ -1,0 +1,11 @@
+C:\Users\PC\source\repos\HumanResourceManagement\HumanResourceManagement\bin\Debug\netcoreapp3.1\HumanResourceManagement.exe
+C:\Users\PC\source\repos\HumanResourceManagement\HumanResourceManagement\bin\Debug\netcoreapp3.1\HumanResourceManagement.deps.json
+C:\Users\PC\source\repos\HumanResourceManagement\HumanResourceManagement\bin\Debug\netcoreapp3.1\HumanResourceManagement.runtimeconfig.json
+C:\Users\PC\source\repos\HumanResourceManagement\HumanResourceManagement\bin\Debug\netcoreapp3.1\HumanResourceManagement.runtimeconfig.dev.json
+C:\Users\PC\source\repos\HumanResourceManagement\HumanResourceManagement\bin\Debug\netcoreapp3.1\HumanResourceManagement.dll
+C:\Users\PC\source\repos\HumanResourceManagement\HumanResourceManagement\bin\Debug\netcoreapp3.1\HumanResourceManagement.pdb
+C:\Users\PC\source\repos\HumanResourceManagement\HumanResourceManagement\obj\Debug\netcoreapp3.1\HumanResourceManagement.csprojAssemblyReference.cache
+C:\Users\PC\source\repos\HumanResourceManagement\HumanResourceManagement\obj\Debug\netcoreapp3.1\HumanResourceManagement.AssemblyInfoInputs.cache
+C:\Users\PC\source\repos\HumanResourceManagement\HumanResourceManagement\obj\Debug\netcoreapp3.1\HumanResourceManagement.AssemblyInfo.cs
+C:\Users\PC\source\repos\HumanResourceManagement\HumanResourceManagement\obj\Debug\netcoreapp3.1\HumanResourceManagement.dll
+C:\Users\PC\source\repos\HumanResourceManagement\HumanResourceManagement\obj\Debug\netcoreapp3.1\HumanResourceManagement.pdb
