@@ -1211,25 +1211,22 @@ namespace HumanResourceManagement
                 Person SearchedPerson = EmployeeList.Find(number => number.sRegNumber == sParameter);
                 if (SearchedPerson != null)
                 {
-                    string x;
                     Console.WriteLine("Are you sure you want to delete{0}?", SearchedPerson);
-                    Console.WriteLine("CONFIRMATION ENTER (YES) or (NO)");
-                    x = Console.ReadLine();
-                    if (x == "YES" || x == "NO" || x == "yes" || x == "no")
+                    Console.WriteLine("CONFIRMATION ENTER ([1] YES) or ([2] NO)");
+                    char cOption = Console.ReadKey(true).KeyChar;
+                    Console.Clear();
+
+                    switch (cOption)
                     {
-                        if (x == "YES" || x == "yes")
-                        {
+                        case '1':
                             EmployeeList.Remove(SearchedPerson);
                             Console.WriteLine("You deleted {0}", SearchedPerson);
-                        }
-                        else
-                        {
+                            break;
+                        case '2':
                             Console.WriteLine("The employee has not been removed!");
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("You have typed incorrectly, enter YES or NO!");
+                            break;
+                        default:
+                            break;
                     }
                 }
             }
