@@ -145,9 +145,33 @@ namespace HumanResourceManagement
                 sDateOfConclusion_F = F.DateOf(
                     "Conclusion"
                     );
-                sContractType_F = F.sText(
-                "Contract type", "Contract type may not contain characters other than letters!", "^[a-zA-Z]+(\\s?\\-?[a-zA-Z]*)*$"
-                );
+
+            char Option;
+            Console.WriteLine("Choose Contract Type: ");
+            Console.WriteLine("1.B2B");
+            Console.WriteLine("2.Trial");
+            Console.WriteLine("2.Fixed - term contract");
+
+            Option = Console.ReadKey(true).KeyChar;
+
+            sContractType_F = "";
+
+            switch (Option)
+            {
+                default:
+                    break;
+
+                case '1':
+                    sContractType_F = "B2B";
+                    break;
+                case '2':
+                    sContractType_F = "Trial";
+                    break;
+                case '3':
+                    sContractType_F = "Fixed - term contract";
+                    break;
+
+            }
             iContractTime_F = F.iNumber(
                 "Contract time", "The Contract Time may not contain characters other than numbers!", "^[0-9]+$"
                 );
