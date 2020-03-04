@@ -29,9 +29,9 @@ namespace HumanResourceManagement
             Address newAddress0002 = new Address("Okrezna", 46, "74-320", "Barlinek");
             Address newAddress0003 = new Address("ks.Boguslawa X", 43, "70-441", "Szczecin");
             ContractOfEmployment newContractOfEmployment = new ContractOfEmployment("15-01-2020", "UoP", 36);
-            EmployeeList.Add(new Person("Pawel", "Cybulski", "0002", newAddress0001, "30-09-1998", newContractOfEmployment)
+            EmployeeList.Add(new Person("Pawel", "Cybulski", "0001", newAddress0001, "30-09-1998", newContractOfEmployment)
                 );
-            EmployeeList.Add(new Person("Kamil", "Blaz", "0001", newAddress0002, "09-07-1998", newContractOfEmployment)
+            EmployeeList.Add(new Person("Kamil", "Blaz", "0002", newAddress0002, "09-07-1998", newContractOfEmployment)
                 );
             EmployeeList.Add(new Person("Szymon", "Lesisz", "0003", newAddress0003, "20-09-1999", newContractOfEmployment)
                 );
@@ -112,36 +112,39 @@ namespace HumanResourceManagement
         {
             string sName_F, sSurname_F, sRegNumber_F, sDateOfBirth_F, sDateOfConclusion_F, sContractType_F, sStreet_F, sPostalAddress_F, sCity_F;
             int iContractTime_F, iHouseNumber_F;
-            
+            string sTest;
+
             Console.WriteLine("--- Personal Data ---");
             sName_F = F.sText(
                 "Name", "Name cannot contain characters other than letters!", "^[a-zA-Z]+(\\s?\\-?[a-zA-Z]*)*$"
                 );
-                sSurname_F = F.sText(
-                "Surname", "Surname cannot contain characters other than letters!", "^[a-zA-Z]+(\\s?\\-?[a-zA-Z]*)*$"
-                );
-            sRegNumber_F = F.sText(
+            sSurname_F = F.sText(
+            "Surname", "Surname cannot contain characters other than letters!", "^[a-zA-Z]+(\\s?\\-?[a-zA-Z]*)*$"
+            );
+            sTest = F.sText(
                 "Registration Number", "The Registration Number have to consist of 4 or more number!", "^[0-9]{4,}$"
                 );
+            sRegNumber_F = IdentificationNumberCheck(sTest);
             sDateOfBirth_F = F.DateOf(
                 "Birth"
                 );
 
             Console.WriteLine("--- Address ---");
-                sStreet_F = F.sText(
-                "Street", "The Street must not contain other signs than letters!", "^[a-zA-Z]+(\\s?\\-?[a-zA-Z]*)*$"
-                );
+            sStreet_F = F.sText(
+            "Street", "The Street must not contain other signs than letters!", "^[a-zA-Z]+(\\s?\\-?[a-zA-Z]*)*$"
+            );
             iHouseNumber_F = F.iNumber(
                 "House Number", "The House Number cannot contain characters other than numbers!", "^[0-9]+$"
                 );
-                sPostalAddress_F = F.sText(
-                "Postal Address (XX-XXX)", "Postal Address have to contain " + "-" + " and cannot contain characters other than numbers!", "^[0-9]{2}-[0-9]{3}$"
-                );
+            sPostalAddress_F = F.sText(
+            "Postal Address (XX-XXX)", "Postal Address have to contain " + "-" + " and cannot contain characters other than numbers!", "^[0-9]{2}-[0-9]{3}$"
+            );
             sCity_F = F.sText(
                 "City", "The City must not contain other signs than letters!", "^[a-zA-Z]+(\\s?\\-?[a-zA-Z]*)*$"
                 );
 
             Console.WriteLine("--- Contract---");
+
                 sDateOfConclusion_F = F.DateOf(
                     "Conclusion"
                     );
@@ -172,6 +175,7 @@ namespace HumanResourceManagement
                     break;
 
             }
+
             iContractTime_F = F.iNumber(
                 "Contract time", "The Contract Time may not contain characters other than numbers!", "^[0-9]+$"
                 );
@@ -338,7 +342,7 @@ namespace HumanResourceManagement
             sParameter = F.sText(
                 "Enter the registration number of the person whose address you want to edit", "The Registration Number have to consist of 4 or more number!", "^[0-9]{4,}$"
                 );
-           
+
             Person SearchedPerson = EmployeeList.Find(number => number.sRegNumber == sParameter);
 
             if (SearchedPerson != null)
@@ -437,7 +441,7 @@ namespace HumanResourceManagement
                 int iNewTimeContract = F.iNumber(
                 "Contract time", "The Contract Time may not contain characters other than numbers!", "^[0-9]+$"
                 );
-               
+
                 string sNewName = SearchedPerson.sName;
                 string sNewSurname = SearchedPerson.sSurname;
                 string sNewRegNumber = SearchedPerson.sRegNumber;
@@ -487,6 +491,39 @@ namespace HumanResourceManagement
                     }
                 }
             }
+        }
+
+        public string IdentificationNumberCheck(string sIdentificationNumberToCheck)
+        {
+            int iWorkersIdentificationNumbers = 100;
+            string[] IdentificationNumberTabel = new string[iWorkersIdentificationNumbers];
+            int iNumber = 0;
+            foreach (Person O in EmployeeList)
+            {
+                IdentificationNumberTabel[iNumber] = O.sRegNumber;
+                iNumber++;
+            }
+
+            for (int iCheckingNumber = 0; iCheckingNumber < iWorkersIdentificationNumbers; iCheckingNumber++)
+            {
+                do
+                {
+                    if (IdentificationNumberTabel[iCheckingNumber] == sIdentificationNumberToCheck)
+                    {
+                        Console.WriteLine("This number is occupied. Pick another one.");
+                        string sRegNumber_F = F.sText(
+                    "Registration Number", "The Registration Number have to consist of 4 or more number!", "^[0-9]{4,}$");
+                        sIdentificationNumberToCheck = sRegNumber_F;
+                    }
+                    else
+                    {
+                        IdentificationNumberTabel[iCheckingNumber] = sIdentificationNumberToCheck;
+
+                    }
+
+                } while (IdentificationNumberTabel[iCheckingNumber] != sIdentificationNumberToCheck);
+            }
+            return sIdentificationNumberToCheck;
         }
 
         public void end()
