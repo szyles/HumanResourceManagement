@@ -144,9 +144,10 @@ namespace HumanResourceManagement
                 );
 
             Console.WriteLine("--- Contract---");
-            sDateOfConclusion_F = F.DateOf(
-                "Conclusion"
-                );
+
+                sDateOfConclusion_F = F.DateOf(
+                    "Conclusion"
+                    );
 
             char Option;
             Console.WriteLine("Choose Contract Type: ");
@@ -174,6 +175,7 @@ namespace HumanResourceManagement
                     break;
 
             }
+
             iContractTime_F = F.iNumber(
                 "Contract time", "The Contract Time may not contain characters other than numbers!", "^[0-9]+$"
                 );
