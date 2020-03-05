@@ -124,7 +124,8 @@ namespace HumanResourceManagement
             sTest = F.sText(
                 "Registration Number", "The Registration Number have to consist of 4 or more number!", "^[0-9]{4,}$"
                 );
-            sRegNumber_F = IdentificationNumberCheck(sTest);
+            sRegNumber_F = sTest;
+
             sDateOfBirth_F = F.DateOf(
                 "Birth"
                 );
@@ -343,10 +344,10 @@ namespace HumanResourceManagement
                 "Enter the registration number of the person whose address you want to edit", "The Registration Number have to consist of 4 or more number!", "^[0-9]{4,}$"
                 );
 
+
             Person SearchedPerson = EmployeeList.Find(number => number.sRegNumber == sParameter);
 
-            if (SearchedPerson != null)
-            {
+            if (SearchedPerson != null){
                 Console.WriteLine(" Person details for editing the home address {0}", SearchedPerson);
                 string sNewStreet = F.sText(
                 "Street", "The Street must not contain other signs than letters!", "^[a-zA-Z]+(\\s?\\-?[a-zA-Z]*)*$"
@@ -361,27 +362,16 @@ namespace HumanResourceManagement
                 "City", "The City must not contain other signs than letters!", "^[a-zA-Z]+(\\s?\\-?[a-zA-Z]*)*$"
                 );
 
-                string sNewName = SearchedPerson.sName;
-                string sNewSurname = SearchedPerson.sSurname;
-                string sNewRegNumber = SearchedPerson.sRegNumber;
-                string sNewDateOfBirth = SearchedPerson.sDateOfBrith;
-
-                string sNewDateOfConclusion = SearchedPerson.ContractOfEmployment.sDateOfConclusion;
-                string sNewContractType = SearchedPerson.ContractOfEmployment.sContractType;
-                int iNewContractTime = SearchedPerson.ContractOfEmployment.iContractTime;
-
-                ContractOfEmployment newContractOfEmployment = new ContractOfEmployment(sNewDateOfConclusion, sNewContractType, iNewContractTime);
-
                 Address NewAddress = new Address(sNewStreet, iNewNumber, sNewPostalAddress, sNewCity);
+                EmployeeList.Add(new Person(SearchedPerson.sName, SearchedPerson.sSurname, SearchedPerson.sRegNumber, NewAddress, SearchedPerson.sDateOfBrith, SearchedPerson.ContractOfEmployment));
                 EmployeeList.Remove(SearchedPerson);
-                EmployeeList.Add(new Person(sNewName, sNewSurname, sNewRegNumber, NewAddress, sNewDateOfBirth, newContractOfEmployment));
+                
             }
         }
 
         public void Change_Personal_Data()
         {
             string sParameter;
-            string sNewName, sNewSurname, sNewDateOfBirth;
             sParameter = F.sText(
                 "Enter the registration number of the person whose personal data you want to change", "The Registration Number have to consist of 4 or more number!", "^[0-9]{4,}$"
                 );
@@ -391,37 +381,23 @@ namespace HumanResourceManagement
             if (SearchedPerson != null)
             {
                 Console.WriteLine("Person data to change personal data {0}", SearchedPerson);
-                sNewName = F.sText(
+                string sNewName = F.sText(
                     "Name", "Name cannot contain characters other than letters!", "^[a-zA-Z]+(\\s?\\-?[a-zA-Z]*)*$"
                     );
 
-                sNewSurname = F.sText(
+                string sNewSurname = F.sText(
                     "Surname", "Surname cannot contain characters other than letters!", "^[a-zA-Z]+(\\s?\\-?[a-zA-Z]*)*$"
                     );
-                sNewDateOfBirth = F.DateOf(
+                string sNewDateOfBirth = F.DateOf(
                     "Birth"
                     );
 
-                string sNewStreet = SearchedPerson.Address.sStreet;
-                string sNewPostalAddress = SearchedPerson.Address.sPostalAddress;
-                int sNewHouseNumber = SearchedPerson.Address.iHouseNumber;
-                string sNewCity = SearchedPerson.Address.sCity;
-                string sNewRegNumber = SearchedPerson.sRegNumber;
-
-                string sNewDateOfConclusion = SearchedPerson.ContractOfEmployment.sDateOfConclusion;
-                string sNewContractType = SearchedPerson.ContractOfEmployment.sContractType;
-                int iNewContractTime = SearchedPerson.ContractOfEmployment.iContractTime;
-
-                Address NewAddress = new Address(sNewStreet, sNewHouseNumber, sNewPostalAddress, sNewCity);
-                ContractOfEmployment NewContractOfEmployment = new ContractOfEmployment(sNewDateOfConclusion, sNewContractType, iNewContractTime);
-
+                EmployeeList.Add(new Person(sNewName,sNewSurname,SearchedPerson.sRegNumber,SearchedPerson.Address,sNewDateOfBirth,SearchedPerson.ContractOfEmployment));
                 EmployeeList.Remove(SearchedPerson);
-                EmployeeList.Add(new Person(sNewName, sNewSurname, sNewRegNumber, NewAddress, sNewDateOfBirth, NewContractOfEmployment));
             }
         }
 
-        public void Change_Contract_of_Employment()
-        {
+        public void Change_Contract_of_Employment(){
             string sParameter;
 
             sParameter = F.sText(
@@ -442,22 +418,11 @@ namespace HumanResourceManagement
                 "Contract time", "The Contract Time may not contain characters other than numbers!", "^[0-9]+$"
                 );
 
-                string sNewName = SearchedPerson.sName;
-                string sNewSurname = SearchedPerson.sSurname;
-                string sNewRegNumber = SearchedPerson.sRegNumber;
-                string sNewDateOfBirth = SearchedPerson.sDateOfBrith;
-
-                string sNewStreet = SearchedPerson.Address.sStreet;
-                int iNewHouseNumber = SearchedPerson.Address.iHouseNumber;
-                string sNewPostalAddress = SearchedPerson.Address.sPostalAddress;
-                string sNewCity = SearchedPerson.Address.sCity;
-
 
                 ContractOfEmployment newContractOfEmployment = new ContractOfEmployment(sNewDateOfConclusion, sNewContractType, iNewTimeContract);
-                Address newAddress = new Address(sNewStreet, iNewHouseNumber, sNewPostalAddress, sNewCity);
 
+                EmployeeList.Add(new Person(SearchedPerson.sName, SearchedPerson.sSurname, SearchedPerson.sRegNumber, SearchedPerson.Address, SearchedPerson.sDateOfBrith, newContractOfEmployment));
                 EmployeeList.Remove(SearchedPerson);
-                EmployeeList.Add(new Person(sNewName, sNewSurname, sNewRegNumber, newAddress, sNewDateOfBirth, newContractOfEmployment));
             }
         }
 
@@ -491,39 +456,6 @@ namespace HumanResourceManagement
                     }
                 }
             }
-        }
-
-        public string IdentificationNumberCheck(string sIdentificationNumberToCheck)
-        {
-            int iWorkersIdentificationNumbers = 100;
-            string[] IdentificationNumberTabel = new string[iWorkersIdentificationNumbers];
-            int iNumber = 0;
-            foreach (Person O in EmployeeList)
-            {
-                IdentificationNumberTabel[iNumber] = O.sRegNumber;
-                iNumber++;
-            }
-
-            for (int iCheckingNumber = 0; iCheckingNumber < iWorkersIdentificationNumbers; iCheckingNumber++)
-            {
-                do
-                {
-                    if (IdentificationNumberTabel[iCheckingNumber] == sIdentificationNumberToCheck)
-                    {
-                        Console.WriteLine("This number is occupied. Pick another one.");
-                        string sRegNumber_F = F.sText(
-                    "Registration Number", "The Registration Number have to consist of 4 or more number!", "^[0-9]{4,}$");
-                        sIdentificationNumberToCheck = sRegNumber_F;
-                    }
-                    else
-                    {
-                        IdentificationNumberTabel[iCheckingNumber] = sIdentificationNumberToCheck;
-
-                    }
-
-                } while (IdentificationNumberTabel[iCheckingNumber] != sIdentificationNumberToCheck);
-            }
-            return sIdentificationNumberToCheck;
         }
 
         public void end()
