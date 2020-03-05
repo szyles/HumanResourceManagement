@@ -114,15 +114,19 @@ namespace HumanResourceManagement
             int iContractTime_F, iHouseNumber_F;
             
             Console.WriteLine("--- Personal Data ---");
+
             sName_F = F.sText(
                 "Name", "Name cannot contain characters other than letters!", "^[a-zA-Z]+(\\s?\\-?[a-zA-Z]*)*$"
                 );
-                sSurname_F = F.sText(
+            sSurname_F = F.sText(
                 "Surname", "Surname cannot contain characters other than letters!", "^[a-zA-Z]+(\\s?\\-?[a-zA-Z]*)*$"
                 );
-            sRegNumber_F = F.sText(
+            string sTest = F.sText(
                 "Registration Number", "The Registration Number have to consist of 4 or more number!", "^[0-9]{4,}$"
                 );
+            sRegNumber_F = IdentificationNumberCheck(sTest);
+
+
             sDateOfBirth_F = F.DateOf(
                 "Birth"
                 );
@@ -487,6 +491,59 @@ namespace HumanResourceManagement
                     }
                 }
             }
+        }
+
+        public string IdentificationNumberCheck(string sIdentificationNumberToCheck)
+        {
+            /*int iWorkersIdentificationNumbers = 100;
+            string[] IdentificationNumberTabel = new string[iWorkersIdentificationNumbers];
+            int iNumber = 0;
+
+            foreach (Person O in EmployeeList)
+            {
+                IdentificationNumberTabel[iNumber] = O.sRegNumber;
+                iNumber++;
+            }*/
+
+            //for (int iCheckingNumber = 0; iCheckingNumber < iWorkersIdentificationNumbers; iCheckingNumber++){
+            do{
+                if (EmployeeList.Exists(x => x.sRegNumber == sIdentificationNumberToCheck)){
+                    Console.WriteLine("This number is occupied. Pick another one.");
+                    string sRegNumber_F = F.sText(
+                "Registration Number", "The Registration Number have to consist of 4 or more number!", "^[0-9]{4,}$");
+                    sIdentificationNumberToCheck = sRegNumber_F;
+                } else {
+                    Console.WriteLine("1");
+                }
+            } while (EmployeeList.Exists(x => x.sRegNumber != sIdentificationNumberToCheck));
+            // }
+            return sIdentificationNumberToCheck;
+        }
+
+        public string IdentificationNumberCheckForChangingData(string sIdentificationNumberToCheck2)
+        {
+            //Address TestingAddress = new Address("",0, "", "");
+            //ContractOfEmployment TestingContract = new ContractOfEmployment("", "", 0);
+            do
+            {
+                if (EmployeeList.Exists(x => x.sRegNumber == sIdentificationNumberToCheck2))
+                {
+                    Console.WriteLine("test");
+                    string sTest = sIdentificationNumberToCheck2;
+                    sIdentificationNumberToCheck2 = sTest;
+                }
+                else
+                {
+                    Console.WriteLine("There is no ID match. Please try again");
+                    sIdentificationNumberToCheck2 = F.sText(
+                    "Enter the registration number of the employee whose contract requires a change", "The Registration Number have to consist of 4 or more number!", "^[0-9]{4,}$"
+                    );
+
+                }
+
+            } while (EmployeeList.Exists(x => x.sRegNumber == sIdentificationNumberToCheck2));
+
+            return sIdentificationNumberToCheck2;
         }
 
         public void end()
