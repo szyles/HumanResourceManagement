@@ -9,6 +9,7 @@ namespace HumanResourceManagement
 {
     class HumanResources
     {
+        List<Person> Results;
         FormHR F = new FormHR();
         List<Person> employeeList;
         public List<Person> EmployeeList
@@ -115,16 +116,18 @@ namespace HumanResourceManagement
             string sTest;
 
             Console.WriteLine("--- Personal Data ---");
+
             sName_F = F.sText(
                 "Name", "Name cannot contain characters other than letters!", "^[a-zA-Z]+(\\s?\\-?[a-zA-Z]*)*$"
                 );
             sSurname_F = F.sText(
-            "Surname", "Surname cannot contain characters other than letters!", "^[a-zA-Z]+(\\s?\\-?[a-zA-Z]*)*$"
-            );
-            sTest = F.sText(
+
+                "Surname", "Surname cannot contain characters other than letters!", "^[a-zA-Z]+(\\s?\\-?[a-zA-Z]*)*$"
+                );
+            sRegNumber_F = F.sText(
                 "Registration Number", "The Registration Number have to consist of 4 or more number!", "^[0-9]{4,}$"
                 );
-            sRegNumber_F = sTest;
+
 
             sDateOfBirth_F = F.DateOf(
                 "Birth"
@@ -152,9 +155,10 @@ namespace HumanResourceManagement
 
             char Option;
             Console.WriteLine("Choose Contract Type: ");
+            Console.WriteLine("Selecting anything apart given options will result in personal choose contract type option [by hand]");
             Console.WriteLine("1.B2B");
             Console.WriteLine("2.Trial");
-            Console.WriteLine("2.Fixed - term contract");
+            Console.WriteLine("3.Fixed - term contract");
 
             Option = Console.ReadKey(true).KeyChar;
 
@@ -162,9 +166,6 @@ namespace HumanResourceManagement
 
             switch (Option)
             {
-                default:
-                    break;
-
                 case '1':
                     sContractType_F = "B2B";
                     break;
@@ -173,6 +174,11 @@ namespace HumanResourceManagement
                     break;
                 case '3':
                     sContractType_F = "Fixed - term contract";
+                    break;
+                default:
+                    sContractType_F = F.sText(
+                "Contract type", "Contract type may not contain characters other than letters!", "^[a-zA-Z]+(\\s?\\-?[a-zA-Z]*)*$"
+                );
                     break;
 
             }
@@ -226,11 +232,14 @@ namespace HumanResourceManagement
                              "Please enter the person's surname", "Surname cannot contain characters other than letters!", "^[a-zA-Z]+(\\s?\\-?[a-zA-Z]*)*$"
                             );
 
-                        SearchedPerson = EmployeeList.Find(tag => tag.sSurname == sParameter);
+                        Results = EmployeeList.FindAll(tag => tag.sSurname.Equals(sParameter));
 
-                        if (SearchedPerson != null)
+                        if (Results != null)
                         {
-                            Console.WriteLine(SearchedPerson.Date());
+                            foreach (Person O in Results)
+                            {
+                                Console.WriteLine(O.ToString());
+                            }
                         }
                         else
                         {
@@ -242,11 +251,14 @@ namespace HumanResourceManagement
                         sParameter = F.sText(
                              "Please enter the person's name", "Name cannot contain characters other than letters!", "^[a-zA-Z]+(\\s?\\-?[a-zA-Z]*)*$"
                             );
-                        SearchedPerson = EmployeeList.Find(tag => tag.sName == sParameter);
+                        Results = EmployeeList.FindAll(tag => tag.sName.Equals(sParameter));
 
-                        if (SearchedPerson != null)
+                        if (Results != null)
                         {
-                            Console.WriteLine(SearchedPerson.Date());
+                            foreach (Person O in Results)
+                            {
+                                Console.WriteLine(O.ToString());
+                            }
                         }
                         else
                         {
@@ -274,11 +286,15 @@ namespace HumanResourceManagement
                         sParameter = F.sText(
                             "Please enter the city in which the person lives", "City cannot contain characters other than letters!", "^[a-zA-Z]+(\\s?\\-?[a-zA-Z]*)*$"
                             );
-                        SearchedPerson = EmployeeList.Find(tag => tag.Address.sCity == sParameter);
 
-                        if (SearchedPerson != null)
+                        Results = EmployeeList.FindAll(tag => tag.Address.sCity.Equals(sParameter));
+
+                        if (Results != null)
                         {
-                            Console.WriteLine(SearchedPerson.Date());
+                            foreach (Person O in Results)
+                            {
+                                Console.WriteLine(O.ToString());
+                            }
                         }
                         else
                         {
@@ -291,11 +307,14 @@ namespace HumanResourceManagement
                             "Please enter the Contract Type of the person", "Contract type may not contain characters other than letters!", "^[a-zA-Z]+$"
                             );
 
-                        SearchedPerson = EmployeeList.Find(tag => tag.ContractOfEmployment.sContractType == sParameter);
+                        Results = EmployeeList.FindAll(tag => tag.ContractOfEmployment.sContractType.Equals(sParameter));
 
-                        if (SearchedPerson != null)
+                        if (Results != null)
                         {
-                            Console.WriteLine(SearchedPerson.Date());
+                            foreach (Person O in Results)
+                            {
+                                Console.WriteLine(O.ToString());
+                            }
                         }
                         else
                         {
@@ -307,11 +326,14 @@ namespace HumanResourceManagement
                         sParameter = F.DateOf(
                             "Birth"
                             );
-                        SearchedPerson = EmployeeList.Find(nazw => nazw.sDateOfBrith == sParameter);
+                        Results = EmployeeList.FindAll(tag => tag.sDateOfBrith.Equals(sParameter));
 
-                        if (SearchedPerson != null)
+                        if (Results != null)
                         {
-                            Console.WriteLine(SearchedPerson.Date());
+                            foreach (Person O in Results)
+                            {
+                                Console.WriteLine(O.ToString());
+                            }
                         }
                         else
                         {
@@ -365,7 +387,6 @@ namespace HumanResourceManagement
                 Address NewAddress = new Address(sNewStreet, iNewNumber, sNewPostalAddress, sNewCity);
                 EmployeeList.Add(new Person(SearchedPerson.sName, SearchedPerson.sSurname, SearchedPerson.sRegNumber, NewAddress, SearchedPerson.sDateOfBrith, SearchedPerson.ContractOfEmployment));
                 EmployeeList.Remove(SearchedPerson);
-                
             }
         }
 
@@ -392,7 +413,9 @@ namespace HumanResourceManagement
                     "Birth"
                     );
 
-                EmployeeList.Add(new Person(sNewName,sNewSurname,SearchedPerson.sRegNumber,SearchedPerson.Address,sNewDateOfBirth,SearchedPerson.ContractOfEmployment));
+
+                EmployeeList.Add(new Person(sNewName, sNewSurname, SearchedPerson.sRegNumber, SearchedPerson.Address, sNewDateOfBirth, SearchedPerson.ContractOfEmployment));
+
                 EmployeeList.Remove(SearchedPerson);
             }
         }
@@ -425,6 +448,7 @@ namespace HumanResourceManagement
                 EmployeeList.Remove(SearchedPerson);
             }
         }
+
 
         public void Delete_Employee()
         {
