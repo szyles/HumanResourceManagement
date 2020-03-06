@@ -30,9 +30,9 @@ namespace HumanResourceManagement
             Address newAddress0002 = new Address("Okrezna", 46, "74-320", "Barlinek");
             Address newAddress0003 = new Address("ks.Boguslawa X", 43, "70-441", "Szczecin");
             ContractOfEmployment newContractOfEmployment = new ContractOfEmployment("15-01-2020", "UoP", 36);
-            EmployeeList.Add(new Person("Pawel", "Cybulski", "0002", newAddress0001, "30-09-1998", newContractOfEmployment)
+            EmployeeList.Add(new Person("Pawel", "Cybulski", "0001", newAddress0001, "30-09-1998", newContractOfEmployment)
                 );
-            EmployeeList.Add(new Person("Kamil", "Blaz", "0001", newAddress0002, "09-07-1998", newContractOfEmployment)
+            EmployeeList.Add(new Person("Kamil", "Blaz", "0002", newAddress0002, "09-07-1998", newContractOfEmployment)
                 );
             EmployeeList.Add(new Person("Szymon", "Lesisz", "0003", newAddress0003, "20-09-1999", newContractOfEmployment)
                 );
@@ -113,13 +113,15 @@ namespace HumanResourceManagement
         {
             string sName_F, sSurname_F, sRegNumber_F, sDateOfBirth_F, sDateOfConclusion_F, sContractType_F, sStreet_F, sPostalAddress_F, sCity_F;
             int iContractTime_F, iHouseNumber_F;
-            
+            string sTest;
+
             Console.WriteLine("--- Personal Data ---");
 
             sName_F = F.sText(
                 "Name", "Name cannot contain characters other than letters!", "^[a-zA-Z]+(\\s?\\-?[a-zA-Z]*)*$"
                 );
             sSurname_F = F.sText(
+
                 "Surname", "Surname cannot contain characters other than letters!", "^[a-zA-Z]+(\\s?\\-?[a-zA-Z]*)*$"
                 );
             sRegNumber_F = F.sText(
@@ -132,20 +134,21 @@ namespace HumanResourceManagement
                 );
 
             Console.WriteLine("--- Address ---");
-                sStreet_F = F.sText(
-                "Street", "The Street must not contain other signs than letters!", "^[a-zA-Z]+(\\s?\\-?[a-zA-Z]*)*$"
-                );
+            sStreet_F = F.sText(
+            "Street", "The Street must not contain other signs than letters!", "^[a-zA-Z]+(\\s?\\-?[a-zA-Z]*)*$"
+            );
             iHouseNumber_F = F.iNumber(
                 "House Number", "The House Number cannot contain characters other than numbers!", "^[0-9]+$"
                 );
-                sPostalAddress_F = F.sText(
-                "Postal Address (XX-XXX)", "Postal Address have to contain " + "-" + " and cannot contain characters other than numbers!", "^[0-9]{2}-[0-9]{3}$"
-                );
+            sPostalAddress_F = F.sText(
+            "Postal Address (XX-XXX)", "Postal Address have to contain " + "-" + " and cannot contain characters other than numbers!", "^[0-9]{2}-[0-9]{3}$"
+            );
             sCity_F = F.sText(
                 "City", "The City must not contain other signs than letters!", "^[a-zA-Z]+(\\s?\\-?[a-zA-Z]*)*$"
                 );
 
             Console.WriteLine("--- Contract---");
+
                 sDateOfConclusion_F = F.DateOf(
                     "Conclusion"
                     );
@@ -179,6 +182,7 @@ namespace HumanResourceManagement
                     break;
 
             }
+
             iContractTime_F = F.iNumber(
                 "Contract time", "The Contract Time may not contain characters other than numbers!", "^[0-9]+$"
                 );
@@ -365,8 +369,7 @@ namespace HumanResourceManagement
 
             Person SearchedPerson = EmployeeList.Find(number => number.sRegNumber == sParameter);
 
-            if (SearchedPerson != null)
-            {
+            if (SearchedPerson != null){
                 Console.WriteLine(" Person details for editing the home address {0}", SearchedPerson);
                 string sNewStreet = F.sText(
                 "Street", "The Street must not contain other signs than letters!", "^[a-zA-Z]+(\\s?\\-?[a-zA-Z]*)*$"
@@ -384,7 +387,6 @@ namespace HumanResourceManagement
                 Address NewAddress = new Address(sNewStreet, iNewNumber, sNewPostalAddress, sNewCity);
                 EmployeeList.Add(new Person(SearchedPerson.sName, SearchedPerson.sSurname, SearchedPerson.sRegNumber, NewAddress, SearchedPerson.sDateOfBrith, SearchedPerson.ContractOfEmployment));
                 EmployeeList.Remove(SearchedPerson);
-
             }
         }
 
@@ -411,13 +413,14 @@ namespace HumanResourceManagement
                     "Birth"
                     );
 
+
                 EmployeeList.Add(new Person(sNewName, sNewSurname, SearchedPerson.sRegNumber, SearchedPerson.Address, sNewDateOfBirth, SearchedPerson.ContractOfEmployment));
+
                 EmployeeList.Remove(SearchedPerson);
             }
         }
 
-        public void Change_Contract_of_Employment()
-        {
+        public void Change_Contract_of_Employment(){
             string sParameter;
 
             sParameter = F.sText(
