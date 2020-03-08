@@ -111,7 +111,7 @@ namespace HumanResourceManagement
 
         public void Hire_an_Employee()
         {
-            string sName_F, sSurname_F, sRegNumber_F, sDateOfBirth_F, sDateOfConclusion_F, sContractType_F, sStreet_F, sPostalAddress_F, sCity_F;
+            string sName_F, sSurname_F, sRegNumber_F, sDateOfBirth_F, sDateOfConclusion_F, sContractType_F, sStreet_F, sPostalAddress_F, sCity_F, sRegNumberToCheck_F;
             int iContractTime_F, iHouseNumber_F;
             
             Console.WriteLine("--- Personal Data ---");
@@ -122,10 +122,10 @@ namespace HumanResourceManagement
             sSurname_F = F.sText(
                 "Surname", "Surname cannot contain characters other than letters!", "^[a-zA-Z]+(\\s?\\-?[a-zA-Z]*)*$"
                 );
-            sRegNumber_F = F.sText(
+            sRegNumberToCheck_F = F.sText(
                 "Registration Number", "The Registration Number have to consist of 4 or more number!", "^[0-9]{4,}$"
                 );
-
+            sRegNumber_F = RegistrationNumberCheck(sRegNumberToCheck_F);
 
             sDateOfBirth_F = F.DateOf(
                 "Birth"
@@ -199,9 +199,7 @@ namespace HumanResourceManagement
 
         public void Search_Employees_by_category()
         {
-            Address newAddress = new Address("", 0, "", "");
-            ContractOfEmployment newContractOfEmployment = new ContractOfEmployment("", "", 0);
-            Person SearchedPerson = new Person("", "", "", newAddress, "", newContractOfEmployment);
+            
 
             char cOption;
             do
@@ -266,11 +264,14 @@ namespace HumanResourceManagement
                         sParameter = F.sText(
                             "Please enter the person's Registration Number", "The Registration Number have to consist of 4 or more number!", "^[0-9]{4,}$"
                             );
-                        SearchedPerson = EmployeeList.Find(tag => tag.sRegNumber == sParameter);
+                        Results = EmployeeList.FindAll(tag => tag.sRegNumber.Equals(sParameter));
 
-                        if (SearchedPerson != null)
+                        if (Results != null)
                         {
-                            Console.WriteLine(SearchedPerson.Date());
+                            foreach (Person O in Results)
+                            {
+                                Console.WriteLine(O.ToString());
+                            }
                         }
                         else
                         {
@@ -345,7 +346,6 @@ namespace HumanResourceManagement
 
         }
 
-
         public void ShowEmployees()
         {
             Console.WriteLine("--- Employes List ---");
@@ -357,11 +357,12 @@ namespace HumanResourceManagement
 
         public void Change_Address()
         {
-            string sParameter;
-            sParameter = F.sText(
+            string sParameter, sCheckingParameter;
+            sCheckingParameter = F.sText(
                 "Enter the registration number of the person whose address you want to edit", "The Registration Number have to consist of 4 or more number!", "^[0-9]{4,}$"
                 );
 
+            sParameter = RegistrationNumberToChangeDataCheck(sCheckingParameter);
 
             Person SearchedPerson = EmployeeList.Find(number => number.sRegNumber == sParameter);
 
@@ -390,10 +391,12 @@ namespace HumanResourceManagement
 
         public void Change_Personal_Data()
         {
-            string sParameter;
-            sParameter = F.sText(
+            string sParameter, sCheckingParameter;
+            sCheckingParameter = F.sText(
                 "Enter the registration number of the person whose personal data you want to change", "The Registration Number have to consist of 4 or more number!", "^[0-9]{4,}$"
                 );
+
+            sParameter = RegistrationNumberToChangeDataCheck(sCheckingParameter);
 
             Person SearchedPerson = EmployeeList.Find(number => number.sRegNumber == sParameter);
 
@@ -418,18 +421,46 @@ namespace HumanResourceManagement
 
         public void Change_Contract_of_Employment()
         {
-            string sParameter;
+            string sParameter, sCheckingParameter;
 
-            sParameter = F.sText(
+            sCheckingParameter = F.sText(
                 "Enter the registration number of the employee whose contract requires a change", "The Registration Number have to consist of 4 or more number!", "^[0-9]{4,}$"
                 );
+
+            sParameter = RegistrationNumberToChangeDataCheck(sCheckingParameter);
             Person SearchedPerson = EmployeeList.Find(number => number.sRegNumber == sParameter);
 
             if (SearchedPerson != null)
             {
-                string sNewContractType = F.sText(
-                "Contract type", "Contract type may not contain characters other than letters!", "^[a-zA-Z]+(\\s?\\-?[a-zA-Z]*)*$"
-                );
+                char Option;
+                Console.WriteLine("Choose Contract Type: ");
+                Console.WriteLine("Selecting anything apart given options will result in personal choose contract type option [by hand]");
+                Console.WriteLine("1.B2B");
+                Console.WriteLine("2.Trial");
+                Console.WriteLine("3.Fixed - term contract");
+
+                Option = Console.ReadKey(true).KeyChar;
+
+                string sNewContractType = "";
+
+                switch (Option)
+                {
+                    case '1':
+                        sNewContractType = "B2B";
+                        break;
+                    case '2':
+                        sNewContractType = "Trial";
+                        break;
+                    case '3':
+                        sNewContractType = "Fixed - term contract";
+                        break;
+                    default:
+                        sNewContractType = F.sText(
+                    "Contract type", "Contract type may not contain characters other than letters!", "^[a-zA-Z]+(\\s?\\-?[a-zA-Z]*)*$"
+                    );
+                        break;
+
+                }
 
                 string sNewDateOfConclusion = F.DateOf(
                     "Conclusion"
@@ -446,6 +477,35 @@ namespace HumanResourceManagement
             }
         }
 
+        public string RegistrationNumberCheck(string sRegistrationNumberToCheck)
+        {
+            bool bContainsItem = EmployeeList.Exists(tag => tag.sRegNumber.Equals(sRegistrationNumberToCheck));
+           
+            while (bContainsItem == true) 
+            {
+                sRegistrationNumberToCheck = F.sText(
+                "Registration Number", "The Registration Number have to consist of 4 or more number!", "^[0-9]{4,}$"
+        );
+                bContainsItem = EmployeeList.Exists(tag => tag.sRegNumber.Equals(sRegistrationNumberToCheck));
+            } 
+
+            return sRegistrationNumberToCheck;
+        }
+
+        public string RegistrationNumberToChangeDataCheck(string sRegistrationNumberToChangeDataCheck)
+        {
+            bool bContainsItem = EmployeeList.Exists(tag => tag.sRegNumber.Equals(sRegistrationNumberToChangeDataCheck));
+
+            while (bContainsItem == false)
+            {
+                sRegistrationNumberToChangeDataCheck = F.sText(
+                "Registration Number", "The Registration Number have to consist of 4 or more number!", "^[0-9]{4,}$"
+        );
+                bContainsItem = EmployeeList.Exists(tag => tag.sRegNumber.Equals(sRegistrationNumberToChangeDataCheck));
+            }
+
+            return sRegistrationNumberToChangeDataCheck;
+        }
 
         public void Delete_Employee()
         {
