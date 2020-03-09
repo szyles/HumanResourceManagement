@@ -113,7 +113,6 @@ namespace HumanResourceManagement
         {
             string sName_F, sSurname_F, sRegNumber_F, sDateOfBirth_F, sDateOfConclusion_F, sContractType_F, sStreet_F, sPostalAddress_F, sCity_F, sRegNumberToCheck_F;
             int iContractTime_F, iHouseNumber_F;
-            string sTest;
 
             Console.WriteLine("--- Personal Data ---");
 
@@ -514,11 +513,14 @@ namespace HumanResourceManagement
         public void Delete_Employee()
         {
             {
-                string sParameter;
+                string sParameter, sGivenParameter;
                 Console.WriteLine("Enter the registration number of the employee you want to delete:");
-                sParameter = F.sText(
+                sGivenParameter = F.sText(
                 "Enter the registration number of the employee you want to delete", "The Registration Number have to consist of 4 or more number!", "^[0-9]{4,}$"
                 );
+
+                sParameter = RegistrationNumberToChangeDataCheck(sGivenParameter);
+
                 Person SearchedPerson = EmployeeList.Find(number => number.sRegNumber == sParameter);
                 if (SearchedPerson != null)
                 {
