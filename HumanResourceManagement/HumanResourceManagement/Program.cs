@@ -14,6 +14,7 @@ namespace HumanResourceManagement
 
 
         {
+            ///Connection to Databases
             MySql.Data.MySqlClient.MySqlConnection conn;
             string myConnectionString;
 
