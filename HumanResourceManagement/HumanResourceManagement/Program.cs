@@ -14,28 +14,10 @@ namespace HumanResourceManagement
 
 
         {
-            ///Connection to Databases
-            MySql.Data.MySqlClient.MySqlConnection conn;
-            string myConnectionString;
-
-            myConnectionString = "Server=127.0.0.1;Port=3308;Database=mydb;Uid=root;Pwd=password";
-
-
-            try
-            {
-                conn = new MySql.Data.MySqlClient.MySqlConnection();
-                conn.ConnectionString = myConnectionString;
-                conn.Open();
-                Console.WriteLine("Successfull");
-                conn.Close();
-            }
-            catch (MySql.Data.MySqlClient.MySqlException ex)
-            {
-                Console.WriteLine("Cannot open");
-                
-
-            }
-
+           
+            LogIn Login = new LogIn();
+            Login.Start();
+            
 
             HumanResources Staff = new HumanResources();
             Staff.StartMenu();
