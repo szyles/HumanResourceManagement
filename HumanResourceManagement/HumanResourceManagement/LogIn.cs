@@ -29,27 +29,26 @@ namespace HumanResourceManagement
         public void Start()
             {
 
-            char loginOption;
+            char cLoginOption;
 
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("----------------SYSTEM LOGIN----------------");
-                Console.WriteLine("Press L if you want to LOG IN.....");
-                Console.WriteLine("Press R if you want REGISTER.....");
-            loginOption = Char.Parse(Console.ReadLine());
-            if (loginOption == 'L' )
-            {
-                Console.Clear();
-                Log();
-            }
-            else if(loginOption == 'R')
-            {
-                Console.Clear();
-                Reg();
-            }
-            else
-            {
-                Console.WriteLine("Try one more");
+                Console.WriteLine("Press 1 if you want to LOG IN.....");
+                Console.WriteLine("Press 2 if you want REGISTER.....");
+            cLoginOption = Char.Parse(Console.ReadLine());
 
+            switch (cLoginOption)
+            {
+                case '1':
+                    Console.Clear();
+                    Log();
+                    break;
+                case '2':
+                    Console.Clear();
+                    Reg();
+                    break;
+                default:
+                    break;
             }
               
    
@@ -57,20 +56,20 @@ namespace HumanResourceManagement
 
         public void Log()
         {
-            string Log_login;
-            string Log_password;
+            string sLogLogin;
+            string sLogPassword;
 
             Console.Write("Login:");
-            Log_login = Console.ReadLine();
+            sLogLogin = Console.ReadLine();
 
    
             Console.Write("Password:");
-            Log_password = Console.ReadLine();
+            sLogPassword = Console.ReadLine();
 
             cmd = new MySqlCommand();
             cs.Open();
             cmd.Connection = cs;
-            cmd.CommandText = "SELECT * FROM Persons WHERE Login ='" + Log_login + "' AND Password = '" + Log_password + "'";
+            cmd.CommandText = "SELECT * FROM Persons WHERE Login ='" + sLogLogin + "' AND Password = '" + sLogPassword + "'";
             dr = cmd.ExecuteReader(); 
             if (dr.Read())
             {
@@ -86,21 +85,21 @@ namespace HumanResourceManagement
         }
         public void Reg()
         {
-            string Reg_login;
-            string Reg_password;
+            string sRegLogin;
+            string sRegPassword;
             
             Console.WriteLine("-----------REJSTRACJA----------");
 
             Console.Write("Login:");
-            Reg_login = Console.ReadLine();
+            sRegLogin = Console.ReadLine();
             
             Console.Write("Password:");
-            Reg_password = Console.ReadLine();
+            sRegPassword = Console.ReadLine();
 
             cmd = new MySqlCommand();
             cs.Open();
             cmd.Connection = cs;
-            cmd.CommandText = "INSERT INTO Persons( Login ,Password) VALUES('" + Reg_login + "'  ,  '" + Reg_password + "' )";
+            cmd.CommandText = "INSERT INTO Persons( Login ,Password) VALUES('" + sRegLogin + "'  ,  '" + sRegPassword + "' )";
             dr = cmd.ExecuteReader();
 
 
