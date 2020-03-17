@@ -48,7 +48,7 @@ namespace HumanResourceManagement
             do
             {
                 Console.Clear();
-                Console.WriteLine("Selecton action:");
+                Console.WriteLine("Select action:");
                 Console.WriteLine("   1. Hire an employee ");
                 Console.WriteLine("   2. Search employees by category ");
                 Console.WriteLine("   3. View Employees ");
