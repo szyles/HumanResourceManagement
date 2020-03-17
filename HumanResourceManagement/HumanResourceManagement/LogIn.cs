@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using MySql.Data.MySqlClient;
+using System.Data;
 
 namespace HumanResourceManagement
 {
@@ -14,6 +15,7 @@ namespace HumanResourceManagement
         readonly MySqlConnection cs;
         MySqlCommand cmd;
         MySqlDataReader dr;
+        FormHR F = new FormHR();
 
         public LogIn(){ 
             string connStr = "server=serwer2016433.home.pl;user=32493616_golem;database = 32493616_golem;port=3306;password= #golemki123"; 
@@ -61,6 +63,8 @@ namespace HumanResourceManagement
             Console.Clear();
         }
 
+       
+
         public void Log()
         {
             string sLogLogin;
@@ -69,6 +73,8 @@ namespace HumanResourceManagement
 
             do
             {
+                Console.WriteLine("-----------LOG IN----------");
+
                 Console.Write("Login:");
                 sLogLogin = Console.ReadLine();
 
@@ -76,7 +82,21 @@ namespace HumanResourceManagement
                 sLogPassword = Console.ReadLine();
 
                 cmd = new MySqlCommand();
-                cs.Open();
+
+                ConnectionState state = cs.State;
+
+                if (state == ConnectionState.Open)
+                {
+                    Console.WriteLine();
+                }
+                else
+                {
+                    cs.Open();
+                    
+                }
+
+
+ 
                 cmd.Connection = cs;
                 cmd.CommandText = "SELECT * FROM Persons WHERE Login ='" + sLogLogin + "' AND Password = '" + sLogPassword + "'";
                 dr = cmd.ExecuteReader();
@@ -102,29 +122,24 @@ namespace HumanResourceManagement
             string sRegPassword;
             
             Console.WriteLine("-----------REGISTRATION----------");
-            Console.Write("Login:");
-            sRegLogin = Console.ReadLine();
+           
             
-            Console.Write("Password:");
-            sRegPassword = Console.ReadLine();
+            sRegLogin = F.sText("Username", "Valid Username, should have minimum 7 characters", "^[a-zA-Z0-9]{7,}$");
+
+
+            sRegPassword = F.sText("Password", "Valid Password, should have  minimum 7 characters", "^[a-zA-Z0-9]{7,}$");
+
 
             cmd = new MySqlCommand();
             cs.Open();
             cmd.Connection = cs;
             cmd.CommandText = "INSERT INTO Persons( Login ,Password) VALUES('" + sRegLogin + "'  ,  '" + sRegPassword + "' )";
             dr = cmd.ExecuteReader();
+            cs.Close();
 
-            dr.Read();
-
-            /*if (dr.Read())
-            {
-                Console.WriteLine("Sucessfull registration");
-            }
-            else
-            {
-                Console.WriteLine("Bad");
-            }
-            dr.Close();*/
+            Console.Clear();
+            Log();
+           
         }
 
         public void LogInEnd()
