@@ -28,42 +28,45 @@ namespace HumanResourceManagement
         public void Start(){
             Console.ForegroundColor = ConsoleColor.Red;
 
-            Console.WriteLine("----------------SYSTEM LOGIN----------------");
-            Console.WriteLine("     1. Login");
-            Console.WriteLine("     2. Registration");
-            Console.WriteLine("     0. Exit");
-            cLoginOption = Console.ReadKey(true).KeyChar;
-            Console.Clear();
+            // Login: adminek | Password: adminek
+            bool bLoginOptionTypedCorrectly = false;
 
-            switch (cLoginOption)
-            {
-                case '0':
-                    Console.WriteLine("Goodbye!");
-                    break;
-                case '1':
-                    Log();
-                    LogInEnd();
-                    break;
-                case '2':
-                    Reg();
-                    LogInEnd();
-                    break;
-                default:
-                    Console.WriteLine("No action selected!");
+            do {
+                Console.WriteLine("----------------SYSTEM LOGIN----------------");
+                Console.WriteLine("     1. Login");
+                Console.WriteLine("     2. Registration");
+                Console.WriteLine("     0. Exit");
+                cLoginOption = Console.ReadKey(true).KeyChar;
+                Console.Clear();
+
+                switch (cLoginOption)
+                {
+                    case '0':
+                        Console.WriteLine("Goodbye!");
+                        break;
+                    case '1':
+                        bLoginOptionTypedCorrectly = true;
+                        Log();
+                        LogInEnd();
+                        break;
+                    case '2':
+                        bLoginOptionTypedCorrectly = true;
+                        Reg();
+                        LogInEnd();
+                        break;
+                    default:
+                        Console.WriteLine("No action selected!");
+                        LogInEnd();
+                        break;
+                }
+                if (cLoginOption == '0')
+                {
+                    Console.WriteLine("Press ENTER to end");
                     System.Environment.Exit(1);
-                    break;
-            }
-            if (cLoginOption == '0')
-            {
-                Console.WriteLine();
-                Console.WriteLine("Press ENTER to end");
-                Console.ReadLine();
-                System.Environment.Exit(1);
-            }
+                }
+            } while (bLoginOptionTypedCorrectly != true);
             Console.Clear();
         }
-
-       
 
         public void Log()
         {
@@ -92,10 +95,7 @@ namespace HumanResourceManagement
                 else
                 {
                     cs.Open();
-                    
                 }
-
-
  
                 cmd.Connection = cs;
                 cmd.CommandText = "SELECT * FROM Persons WHERE Login ='" + sLogLogin + "' AND Password = '" + sLogPassword + "'";
@@ -123,12 +123,9 @@ namespace HumanResourceManagement
             
             Console.WriteLine("-----------REGISTRATION----------");
            
-            
             sRegLogin = F.sText("Username", "Valid Username, should have minimum 7 characters", "^[a-zA-Z0-9]{7,}$");
 
-
             sRegPassword = F.sText("Password", "Valid Password, should have  minimum 7 characters", "^[a-zA-Z0-9]{7,}$");
-
 
             cmd = new MySqlCommand();
             cs.Open();
@@ -149,6 +146,7 @@ namespace HumanResourceManagement
             {
                 Console.WriteLine("Press ENTER to continue");
                 Console.ReadLine();
+                Console.Clear();
             }
         }
     }
