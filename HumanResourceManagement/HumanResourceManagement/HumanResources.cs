@@ -4,14 +4,23 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
+using MySql.Data.MySqlClient;
 
 namespace HumanResourceManagement
 {
     class HumanResources
     {
+        readonly MySqlConnection cs;
+        MySqlCommand cmd;
+        MySqlDataReader dr;
+
+
+
         List<Person> Results;
         FormHR F = new FormHR();
         List<Person> employeeList;
+
+
         public List<Person> EmployeeList
         {
             get
@@ -26,6 +35,12 @@ namespace HumanResourceManagement
 
         public HumanResources()
         {
+            string connStr = "server=serwer2016433.home.pl;user=32493616_golem;database = 32493616_golem;port=3306;password= #golemki123";
+            cs = new MySqlConnection(connStr);
+
+            cmd = new MySqlCommand();
+
+
             Address newAddress0001 = new Address("Fioletowa", 69, "70-781", "Szczecin");
             Address newAddress0002 = new Address("Okrezna", 46, "74-320", "Barlinek");
             Address newAddress0003 = new Address("ks.Boguslawa X", 43, "70-441", "Szczecin");
@@ -199,6 +214,17 @@ namespace HumanResourceManagement
                     sName_F, sSurname_F, sRegNumber_F, newAddress, sDateOfBirth_F, newContractOfEmployment
                     )
                 );
+
+            cs.Open();
+            cmd.Connection = cs;
+            cmd.CommandText = "INSERT INTO Employers(Name,Surname) VALUES('" + sName_F + "'  ,  '" + sSurname_F + "' )";
+            dr = cmd.ExecuteReader();
+            cs.Close();
+
+
+
+
+
         }
 
         public void Search_Employees_by_category()
